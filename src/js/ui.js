@@ -157,7 +157,7 @@ var UI = (function () {
 				return;
 			}
 
-			this.volumeDetails.deleteVolume(null, onError.bind(this));
+			this.volumeDetails.deleteVolume(undefined, onError.bind(this));
 		},
 
 		attachVolume: function attachVolume (instanceId) {
