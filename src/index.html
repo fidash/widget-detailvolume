@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="lib/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="lib/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+<body>
+
+    <!-- Detail view -->
+    <div id="detail-view" class="hide">
+
+        <!-- Header -->
+        <div id="detail-header" class="navbar navbar-default">
+            <div style="padding-left: 0;">
+                <i class="fa fa-database navbar-brand"></i>
+                <h4 id="volume-name" data-toggle="tooltip" data-placement="bottom"></h4>
+                <div id="volume-actions-dropdown" class="dropdown pull-right">
+                    <button id="dlabel" class="btn btn-primary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Actions
+                        <span class="caret"></span>
+                    </button>
+
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <li id="refresh-button" class="clickable" role ="presentation">
+                            <a role="menuitem" tabindex="-1">
+                                <i class="fa fa-refresh"></i> Refresh
+                            </a>
+                        </li>
+                        <li id="volume-terminate" class="clickable" role="presentation">
+                            <a role="menuitem" tabindex="-1">
+                                <i class="fa fa-trash"></i> Terminate Volume   
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <a id="volume-status" class="status pull-right" data-toggle="tooltip" data-placement="bottom">
+                    <div>
+                        <i></i>
+                    </div>
+                </a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <!-- Body -->
+        <div id="detail-body">
+
+            <div class="col-xs-6">
+                <div id="volume-id">
+                    <i class="fa fa-list-alt"></i>
+                    <strong>ID: </strong>
+                    <!-- ID -->
+                    <span></span>
+                    <!--<i class="fa fa-files-o clickable copy" data-toggle="tooltip" data-placement="top" title="Copy to clipboard"></i>-->
+                </div>
+
+                <div id="volume-availability-zone">
+                    <i class="fa fa-globe"></i>
+                    <strong>Availability Zone: </strong>
+                    <!-- Availability Zone -->
+                    <span></span>
+                </div>
+                
+                <div id="volume-size">
+                    <i class="fa fa-tasks"></i>
+                    <strong>Size: </strong>
+                    <!-- Size -->
+                    <span></span>
+                </div>
+
+                <div id="volume-created">
+                    <i class="glyphicon glyphicon-calendar"></i>
+                    <strong>Created: </strong>
+                    <span></span>
+                    <!-- Created -->
+                </div>
+                
+            </div>
+
+            <div class="col-xs-6">
+                <div id="volume-description">
+                    <i class="fa fa-pencil-square-o"></i>
+                    <strong>Description: </strong>
+                    <span clas="description"></span>
+                    <!-- Description -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Default view -->
+    <div id="default-view" class="info hide">
+        No volume data received yet.
+    </div>
+
+
+    <!-- Error view -->
+    <div id="error-view" class="error hide"></div>
+    
+    <!-- Scripts -->
+    <script src="lib/js/jquery.min.js"></script>
+    <script src="lib/js/bootstrap.min.js"></script>
+	<script src="lib/js/jstack.js"></script>
+	<script src="js/volumeDetails.js"></script>
+	<script src="js/ui.js"></script>
+	<script src="js/main.js"></script>
+</body>
+</html>

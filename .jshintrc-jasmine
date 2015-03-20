@@ -1,0 +1,28 @@
+{
+    "jasmine": true,
+    "browser": true,
+    "jquery": true,
+    "debug": false,
+    "devel": false,
+    "eqnull": true,
+    "forin": false,
+    "undef": true,
+    "unused": false,
+    "prototypejs": false,
+    "globalstrict": false,
+    "strict": true,
+    "white": false,
+    "quotmark": false,
+    "globals": {
+        "URL": false,
+        "MashupPlatform": true,
+        "DataViewer": true,
+        "JSTACK": true,
+        "getJSONFixture": true,
+        "UI": true,
+        "ImageDetails": true,
+        "xit": true,
+        "xdescribe": true,
+        "spyOnEvent": true
+    }
+}
