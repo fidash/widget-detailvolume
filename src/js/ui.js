@@ -8,6 +8,9 @@ var UI = (function () {
 	****************************COSNTANTS*****************************
 	*****************************************************************/
 
+	var NONUSABLEWIDTH = 158;
+
+	// Colors
 	var RED = 'rgb(217, 83, 79)';
 	var GREEN = 'green';
 	var AMBAR = 'rgb(239, 163, 0)';
@@ -58,7 +61,8 @@ var UI = (function () {
 	*****************************************************************/
 
 	var getVolumeDetailsSuccess, receiveVolumeId, onError, initEvents,
-		checkVolumeDetails, getDisplayableAddresses, refreshSuccess;
+		checkVolumeDetails, getDisplayableAddresses, refreshSuccess,
+		setNameMaxWidth;
 
 	var delay, prevRefresh, error, deleting;
 
@@ -125,6 +129,10 @@ var UI = (function () {
 				$('#volume-status').css('background-color', statuses[volumeData.status].color);
 			}
 
+			// Set name max-width
+			setNameMaxWidth(NONUSABLEWIDTH);
+
+			// Fix tooltips
 			$('#volume-status').attr('title', statusTooltip);
 			$('#volume-status').attr('data-original-title', $('#volume-status').attr('title'));
 			$('#volume-status').attr('title', '');
@@ -253,6 +261,18 @@ var UI = (function () {
 		return true;
 	};
 
+	setNameMaxWidth = function setNameMaxWidth (nonUsableWidth) {
+
+		var bodyWidth = $('body').attr('width');
+
+		if (bodyWidth >= 360) {
+			$('#volume-name').css('max-width', bodyWidth - nonUsableWidth);
+		}
+		else {
+			$('#volume-name').css('max-width', 360 - nonUsableWidth);
+		}
+	};
+
     initEvents = function initEvents () {
 
     	// Register callback for input endpoint
@@ -261,14 +281,14 @@ var UI = (function () {
 		// Register resize callback
 		MashupPlatform.widget.context.registerCallback(function (newValues) {
 			if ('heightInPixels' in newValues || 'widthInPixels' in newValues) {
-				var nonUsableWidth = 204;
 
 				// Set body size
 				$('body').attr('height', newValues.heightInPixels);
 				$('body').attr('width', newValues.widthInPixels);
 
-				// Set volume name max-width
-				$('#volume-name').css('max-width', newValues.widthInPixels - nonUsableWidth);
+				// Set name max-width
+				setNameMaxWidth(NONUSABLEWIDTH);
+
 			}
 		});
 
