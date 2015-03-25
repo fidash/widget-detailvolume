@@ -227,7 +227,7 @@ describe('Test volume details', function () {
 		expect($('#error-view')).toContainText('500 Error');
 	});
 
-	it('should set the automatic refreshing delay to 2 seconds while status is diffeerent from available or in-use', function () {
+	it('should set the automatic refreshing delay to 1 seconds while status is diffeerent from available or in-use', function () {
 
 		var setTimeoutSpy = spyOn(window, 'setTimeout');
 		var volumeId = 'id';
@@ -235,7 +235,7 @@ describe('Test volume details', function () {
 		receiveWiringEvent(volumeId);
 		getVolumeDetailsSuccess(deletingVolume);
 		
-		expect(setTimeoutSpy).toHaveBeenCalledWith(jasmine.any(Function), 2000);
+		expect(setTimeoutSpy).toHaveBeenCalledWith(jasmine.any(Function), 1000);
 
 	});
 
@@ -289,7 +289,7 @@ describe('Test volume details', function () {
 		expect(setTimeoutSpy.calls.count()).toEqual(expectedCountTimeout);
 	});
 
-	it('should call Volume.getvolume 10 seconds after receiving the last update', function () {
+	it('should call Volume.getvolume 5 seconds after receiving the last update', function () {
 
         var expectedCount, callback;
         var volumeId = 'id';
@@ -302,7 +302,7 @@ describe('Test volume details', function () {
         callback();
 
         expect(JSTACK.Nova.Volume.getvolume.calls.count()).toEqual(expectedCount);
-        expect(setTimeoutSpy).toHaveBeenCalledWith(jasmine.any(Function), 10000);
+        expect(setTimeoutSpy).toHaveBeenCalledWith(jasmine.any(Function), 5000);
             
     });
 

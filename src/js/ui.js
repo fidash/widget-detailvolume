@@ -76,7 +76,6 @@ var UI = (function () {
 		delay = 5000;
 		prevRefresh = false;
 		error = false;
-		deleting = false;
 
 		initEvents.call(this);
 		this.buildDefaultView();
@@ -95,7 +94,7 @@ var UI = (function () {
 			var displayableSize = volumeData.size + ' GB';
 
 			// Adjust refresh delay
-			delay = (volumeData.status !== null && volumeData.status !== 'available' && volumeData.status !== 'in-use') ? 2000 : 10000;
+			delay = (volumeData.status !== null && volumeData.status !== 'available' && volumeData.status !== 'in-use') ? 1000 : 5000;
 
 			// Hide other views
 			$('#error-view').addClass('hide');
@@ -119,7 +118,6 @@ var UI = (function () {
 			$('#volume-status').css('background-color', statuses[volumeData.status].color);
 
 			if (volumeData.status === 'deleting') {
-				deleting = true;
 				$('#volume-status > div > i').addClass(statuses.deleting.class);
 				$('#volume-status').css('background-color', statuses.deleting.color);
 				$('#volume-status').addClass(statuses.deleting.animation);
@@ -343,9 +341,8 @@ var UI = (function () {
 	onError = function onError (errorResponse) {
 
 		// Build default view if flag deleting is true and error is 404
-		if (errorResponse.message === '404 Error' && deleting) {
+		if (errorResponse.message === '404 Error') {
 			this.buildDefaultView();
-			deleting = false;
 		}
 		else {
 			error = true;
