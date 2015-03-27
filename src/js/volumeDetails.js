@@ -25,8 +25,8 @@ var VolumeDetails = (function (JSTACK) {
 			JSTACK.Nova.Volume.deletevolume(this.volumeId, callback, onError);
 		},
 
-		attachVolume: function attachVolume (instanceId, callback, onError) {
-			JSTACK.Nova.attachvolume(instanceId, this.volumeId, callback, onError);
+		attachVolume: function attachVolume (instanceId, device, callback, onError) {
+			JSTACK.Nova.attachvolume(instanceId, this.volumeId, device, callback, onError);
 		},
 
 		detachVolume: function detachVolume (instanceId, callback, error) {

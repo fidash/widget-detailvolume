@@ -1,8 +1,9 @@
 body {
 	min-width: 360px;
+	padding-bottom: 34px;
 }
 
-h4 {
+.navbar h4 {
 	margin-right: 5px;
 	margin-top: 13px;
 	margin-bottom: 8px;
@@ -11,6 +12,10 @@ h4 {
     white-space: nowrap;
     display: inline-block;
     vertical-align: bottom;
+}
+
+.navbar {
+	margin-bottom: 9px;
 }
 
 .hide {
@@ -40,6 +45,10 @@ h4 {
 .btn-primary, .btn-danger {
 	margin-top: 7px;
 	margin-right: 10px;
+}
+
+li .btn-warning {
+	padding: 0px 5px;
 }
 
 .stripes {
@@ -133,4 +142,16 @@ h4 {
 	0%   { background-color: hsl(0, 75%, 50%); }
 	50%  { background-color: hsl(0, 0%, 50%); }
 	100% { background-color: hsl(0, 75%, 50%); }
+}
+
+.nav > li > a {
+	padding: 6px 5px;
+}
+
+.tablist {
+	left: 0;
+	right: 0;
+	bottom: 0;
+	position: fixed;
+	background-color: white;
 }

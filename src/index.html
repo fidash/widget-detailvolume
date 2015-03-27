@@ -3,6 +3,7 @@
 <head>
     <link rel="stylesheet" type="text/css" href="lib/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="lib/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/tabsBelow.css" />
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
 <body>
@@ -44,48 +45,72 @@
         </div>
 
         <!-- Body -->
-        <div id="detail-body">
+        <div id="detail-body" class="tabbable tabs-below">
 
-            <div class="col-xs-6">
-                <div id="volume-id">
-                    <i class="fa fa-list-alt"></i>
-                    <strong>ID: </strong>
-                    <!-- ID -->
-                    <span></span>
-                    <!--<i class="fa fa-files-o clickable copy" data-toggle="tooltip" data-placement="top" title="Copy to clipboard"></i>-->
-                </div>
+            <div class="tab-content" style="padding-bottom:40px;">
+                <div id="overview" role="tabpanel" class="tab-pane active">
+                    <!-- Body -->
+                    <div id="detail-body">
+                        <div class="col-xs-6">
+                            <div id="volume-id">
+                                <i class="fa fa-list-alt"></i>
+                                <strong>ID: </strong>
+                                <!-- ID -->
+                                <span></span>
+                                <!--<i class="fa fa-files-o clickable copy" data-toggle="tooltip" data-placement="top" title="Copy to clipboard"></i>-->
+                            </div>
 
-                <div id="volume-availability-zone">
-                    <i class="fa fa-globe"></i>
-                    <strong>Availability Zone: </strong>
-                    <!-- Availability Zone -->
-                    <span></span>
-                </div>
-                
-                <div id="volume-size">
-                    <i class="fa fa-tasks"></i>
-                    <strong>Size: </strong>
-                    <!-- Size -->
-                    <span></span>
-                </div>
+                            <div id="volume-availability-zone">
+                                <i class="fa fa-globe"></i>
+                                <strong>Availability Zone: </strong>
+                                <!-- Availability Zone -->
+                                <span></span>
+                            </div>
+                            
+                            <div id="volume-size">
+                                <i class="fa fa-tasks"></i>
+                                <strong>Size: </strong>
+                                <!-- Size -->
+                                <span></span>
+                            </div>
 
-                <div id="volume-created">
-                    <i class="glyphicon glyphicon-calendar"></i>
-                    <strong>Created: </strong>
-                    <span></span>
-                    <!-- Created -->
+                            <div id="volume-created">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                                <strong>Created: </strong>
+                                <span></span>
+                                <!-- Created -->
+                            </div>
+                            
+                        </div>
+
+                        <div class="col-xs-6">
+                            <div id="volume-description">
+                                <i class="fa fa-pencil-square-o"></i>
+                                <strong>Description: </strong>
+                                <span clas="description"></span>
+                                <!-- Description -->
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
                 </div>
-                
+                <div id="snapshots" role="tabpanel" class="tab-pane">
+                    <ul class="list-group"></ul>
+                </div>
+                <div id="attachments" role="tabpanel" class="tab-pane">
+                    <ul class="list-group"></ul>
+                </div>
             </div>
-
-            <div class="col-xs-6">
-                <div id="volume-description">
-                    <i class="fa fa-pencil-square-o"></i>
-                    <strong>Description: </strong>
-                    <span clas="description"></span>
-                    <!-- Description -->
-                </div>
-            </div>
+            <ul role="tablist" class="nav nav-tabs tablist" style="min-width: 360px;">
+                <li role="presentation" class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab" aria-expanded="true">Overview</a>
+                </li>
+                <!--<li role="presentation" class="disabled"><a href="#snapshots" aria-controls="snapshots" role="tab" data-toggle="tab" aria-expanded="false">Snapshots</a>
+                </li>-->
+                <li role="presentation" class="disabled"><a >Snapshots</a>
+                </li>
+                <li role="presentation" class=""><a href="#attachments" aria-controls="attachments" role="tab" data-toggle="tab" aria-expanded="false">Attachments</a>
+                </li>
+            </ul>
         </div>
     </div>
 

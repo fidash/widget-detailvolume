@@ -12,7 +12,7 @@ describe('Test volume details', function () {
 	beforeEach(function () {
 
 		JSTACK.Keystone = jasmine.createSpyObj("Keystone", ["init", "authenticate", "gettenants", "params"]);
-		JSTACK.Nova = jasmine.createSpyObj("Nova", ["attachvolume", "detachvolume"]);
+		JSTACK.Nova = jasmine.createSpyObj("Nova", ["attachvolume", "detachvolume", "getserverlist"]);
 		JSTACK.Nova.Volume = jasmine.createSpyObj("Volume", ["getvolume", "deletevolume", "createsnapshot", "deletesnapshot", "getsnapshot"]);
 
 		jasmine.getFixtures().fixturesPath = 'src/test/fixtures/html';

@@ -62,9 +62,9 @@ var UI = (function () {
 
 	var getVolumeDetailsSuccess, receiveVolumeId, onError, initEvents,
 		checkVolumeDetails, getDisplayableAddresses, refreshSuccess,
-		setNameMaxWidth;
+		setNameMaxWidth, buildAttachmentsView, saveInstanceList;
 
-	var delay, prevRefresh, error, deleting;
+	var delay, prevRefresh, error, deleting, instanceById;
 
 
 	/*****************************************************************
@@ -76,6 +76,7 @@ var UI = (function () {
 		delay = 5000;
 		prevRefresh = false;
 		error = false;
+		instanceById = {};
 
 		initEvents.call(this);
 		this.buildDefaultView();
@@ -141,6 +142,9 @@ var UI = (function () {
 			// Initialize tooltips
 			$('[data-toggle="tooltip"]').tooltip();
 
+			// Build attachment list view
+			buildAttachmentsView.call(this, volumeData.attachments);
+
 			// Build
 			$('#detail-view').removeClass('hide');
 		},
@@ -166,14 +170,14 @@ var UI = (function () {
 			this.volumeDetails.deleteVolume(undefined, onError.bind(this));
 		},
 
-		attachVolume: function attachVolume (instanceId) {
+		attachVolume: function attachVolume (instanceId, device) {
 		
 			if (!checkVolumeDetails.call(this)) {
 				MashupPlatform.widget.log('Error: No volume received yet.');
 				return;
 			}
 
-			this.volumeDetails.attachVolume(instanceId, null, onError.bind(this));
+			this.volumeDetails.attachVolume(instanceId, device, undefined, onError.bind(this));
 		},
 
 		detachVolume: function detachVolume (instanceId) {
@@ -183,7 +187,7 @@ var UI = (function () {
 				return;
 			}
 
-			this.volumeDetails.detachVolume(instanceId, null, onError.bind(this));
+			this.volumeDetails.detachVolume(instanceId, undefined, onError.bind(this));
 		},
 
 		createSnapshot: function createSnapshot (name, description) {
@@ -193,7 +197,7 @@ var UI = (function () {
 				return;
 			}
 
-			this.volumeDetails.createSnapshot(name, description, null, onError.bind(this));
+			this.volumeDetails.createSnapshot(name, description, undefined, onError.bind(this));
 		},
 
 		deleteSnapshot: function deleteSnapshot (snapshotId) {
@@ -203,7 +207,7 @@ var UI = (function () {
 				return;
 			}
 
-			this.volumeDetails.deleteSnapshot(snapshotId, null, onError.bind(this));
+			this.volumeDetails.deleteSnapshot(snapshotId, undefined, onError.bind(this));
 		},
 
 		getSnapshotList: function getSnapshotList () {
@@ -213,7 +217,7 @@ var UI = (function () {
 				return;
 			}
 
-			this.volumeDetails.getSnapshotList(null, onError.bind(this));
+			this.volumeDetails.getSnapshotList(undefined, onError.bind(this));
 		},
 
 		refresh: function refresh () {
@@ -271,6 +275,57 @@ var UI = (function () {
 		}
 	};
 
+	buildAttachmentsView = function buildAttachmentsView (attachments) {
+
+		var attachmentsList = $('#attachments ul');
+		var liElement, instanceId, instanceName;
+		var detachVolumeClosure = this.detachVolume.bind(this);
+		var detachButton = $('<button>')
+							.html('<i class="fa fa-chain-broken"></i>')
+							.addClass('btn btn-warning pull-right')
+							.attr('data-toggle', 'tooltip')
+							.attr('data-placement', 'left');
+
+		// Empty previous list
+		$('#attachments ul').empty();
+
+		// Build
+		for (var attachment in attachments) {
+			instanceId = attachments[attachment].server_id;
+			liElement = $('<li>')
+						.attr('id', instanceId)
+						.addClass('list-group-item');
+
+			if (instanceById[instanceId]) {
+				liElement
+					.html('<span>' + instanceById[instanceId] + '</span>');
+			}
+			else {
+				liElement.html('<i class="fa fa-spinner fa-pulse"></i>');
+			}
+
+			detachButton.appendTo(liElement);
+
+			// Insert in DOM
+			attachmentsList.append(liElement);
+
+		}
+
+		// Detach click event
+		$('#attachments button').click(function () {
+
+			var instanceId = $(this).parent().attr('id');
+			detachVolumeClosure(instanceId);
+		});
+
+		// Fix tooltip
+		$('#attachments button').attr('data-original-title', 'Detach Volume');
+
+		// Init tooltip
+		$('[data-toggle="tooltip"]').tooltip();
+
+	};
+
     initEvents = function initEvents () {
 
     	// Register callback for input endpoint
@@ -292,7 +347,6 @@ var UI = (function () {
 
 		// Init click events
 		$('#refresh-button').click(function () {
-			$('#refresh-button > i').addClass('fa-spin');
 			this.refresh.call(this);
 		}.bind(this));
 		$('#volume-terminate').click(function () {
@@ -307,7 +361,7 @@ var UI = (function () {
 			};
 
 			MashupPlatform.wiring.pushEvent('image_id', JSON.stringify(data));
-		});			
+		});	
 
 	};
 
@@ -332,8 +386,6 @@ var UI = (function () {
 	};
 
 	refreshSuccess = function refreshSuccess (volumeData) {
-		// Stop spin animation
-		$('#refresh-button > i').removeClass('fa-spin');
 
 		this.buildDetailView(volumeData.volume);
 	};
@@ -352,12 +404,25 @@ var UI = (function () {
 		
 	};
 
+	saveInstanceList = function saveInstanceList (response) {
+
+		var list = response.servers;
+
+		for (var i = 0; i<list.length; i++) {
+			instanceById[list[i].id] = list[i].name;
+		}
+
+	};
+
 	receiveVolumeId = function receiveVolumeId (wiringData) {
 		wiringData = JSON.parse(wiringData);
 
 		JSTACK.Keystone.params.access = wiringData.access;
 		JSTACK.Keystone.params.token = wiringData.access.token.id;
 		JSTACK.Keystone.params.currentstate = 2;
+
+		// Get instances list
+		JSTACK.Nova.getserverlist(true, null, saveInstanceList.bind(this), onError);
 
 		this.volumeDetails = new VolumeDetails(wiringData.id);
 		error = false;
