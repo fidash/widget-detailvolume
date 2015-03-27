@@ -297,8 +297,7 @@ var UI = (function () {
 						.addClass('list-group-item');
 
 			if (instanceById[instanceId]) {
-				liElement
-					.html('<span>' + instanceById[instanceId] + '</span>');
+				liElement.html('<span>' + instanceById[instanceId] + '</span>');
 			}
 			else {
 				liElement.html('<i class="fa fa-spinner fa-pulse"></i>');
@@ -348,6 +347,13 @@ var UI = (function () {
 		// Init click events
 		$('#refresh-button').click(function () {
 			this.refresh.call(this);
+		}.bind(this));
+		$('#attach-volume').click(function () {
+
+			var instanceId = $('#id_instance').val();
+			var device = $('#id_device').val();
+
+			this.attachVolume.call(this, instanceId, device);
 		}.bind(this));
 		$('#volume-terminate').click(function () {
 			this.deleteVolume.call(this);
@@ -407,9 +413,14 @@ var UI = (function () {
 	saveInstanceList = function saveInstanceList (response) {
 
 		var list = response.servers;
+		var instance;
+		$('#id_instance').empty();
 
 		for (var i = 0; i<list.length; i++) {
-			instanceById[list[i].id] = list[i].name;
+			instance = list[i];
+			instanceById[instance.id] = instance.name;
+
+			$('#id_instance').append('<option value="' + instance.id + '">' + instance.name + '</option>');
 		}
 
 	};

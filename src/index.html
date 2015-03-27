@@ -8,6 +8,41 @@
 </head>
 <body>
 
+    <!-- Attach volume modal -->
+    <div id="attachVolumeModal" class="modal fade" style="top: 0px; display: none; font-size: 12px" aria-hidden="false">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header" style="padding-top:0; padding-bottom: 0;">
+            <a href="#" class="close" data-dismiss="modal">×</a>
+            <h4>Attach a volume</h4>
+          </div>
+          <div class="modal-body clearfix">       
+            <div>
+              <fieldset>
+                <div class="form-group required">
+                  <label class="control-label  required" for="id_name">Instance name *</label>
+                  <div class=" ">
+                    <select class="form-control" id="id_instance"></select>
+                  </div>
+                </div>
+                <div class="form-group ">
+                  <label class="control-label  " for="id_description">Device *</label>
+                  <div class=" ">
+                    <input class="form-control" type="text" value="/dev/vdc" id="id_device">
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <span class="pull-left">* Required fields</span>
+            <button id="attach-volume" data-dismiss="modal" class="btn btn-primary pull-right" style="margin-left: 10px">Attach Volume</button>
+            <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Detail view -->
     <div id="detail-view" class="hide">
 
@@ -26,6 +61,11 @@
                         <li id="refresh-button" class="clickable" role ="presentation">
                             <a role="menuitem" tabindex="-1">
                                 <i class="fa fa-refresh"></i> Refresh
+                            </a>
+                        </li>
+                        <li id="attach-button" class="clickable" data-toggle="modal" data-target="#attachVolumeModal" role ="presentation">
+                            <a role="menuitem" tabindex="-1">
+                                <i class="fa fa-link"></i> Attach Volume
                             </a>
                         </li>
                         <li id="volume-terminate" class="clickable" role="presentation">

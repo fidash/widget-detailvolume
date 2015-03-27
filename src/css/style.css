@@ -37,18 +37,22 @@ body {
 	vertical-align: top;
 }
 
-.btn-default {
+.navbar .btn-default {
 	margin-right: 5px;
 	margin-top: 7px;
 }
 
-.btn-primary, .btn-danger {
+.navbar .btn-primary, .btn-danger {
 	margin-top: 7px;
 	margin-right: 10px;
 }
 
 li .btn-warning {
 	padding: 0px 5px;
+}
+
+.modal-footer {
+	padding: 8px;
 }
 
 .stripes {
