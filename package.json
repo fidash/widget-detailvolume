@@ -1,5 +1,5 @@
 {
-  "name": "OpenStack-ListVolumes",
+  "name": "OpenStack-VolumesDetails",
   "homepage": "https://repo.conwet.fi.upm.es/wirecloud/openstack-listinstances-widget",
   "version": "0.0.1",
   "vendor": "CoNWeT",
