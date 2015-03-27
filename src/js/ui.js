@@ -28,13 +28,17 @@ var UI = (function () {
 			'class': 'glyphicon glyphicon-ok  fa-inverse',
 			'color': GREEN
 		},
+		'attaching': {
+			'class': 'fa fa-repeat fa-spin  fa-inverse',
+			'color': GREEN
+		},
 
 		// AMBAR
 		'creating': {
 			'class': 'fa fa-spinner fa-pulse  fa-inverse',
 			'color': AMBAR
 		},
-		'attaching': {
+		'detaching': {
 			'class': 'fa fa-repeat fa-spin  fa-inverse',
 			'color': AMBAR
 		},
@@ -62,7 +66,7 @@ var UI = (function () {
 
 	var getVolumeDetailsSuccess, receiveVolumeId, onError, initEvents,
 		checkVolumeDetails, getDisplayableAddresses, refreshSuccess,
-		setNameMaxWidth, buildAttachmentsView, saveInstanceList;
+		setNameMaxWidth, saveInstanceList;
 
 	var delay, prevRefresh, error, deleting, instanceById;
 
@@ -73,7 +77,7 @@ var UI = (function () {
 
 	function UI () {
 
-		delay = 5000;
+		delay = 3000;
 		prevRefresh = false;
 		error = false;
 		instanceById = {};
@@ -93,9 +97,13 @@ var UI = (function () {
 
 			var statusTooltip = 'Status: ' + volumeData.status;
 			var displayableSize = volumeData.size + ' GB';
+			var attachment, instanceId;
+
+			// Remove previous attachments
+			$('#volume-attachment span').empty().removeClass();
 
 			// Adjust refresh delay
-			delay = (volumeData.status !== null && volumeData.status !== 'available' && volumeData.status !== 'in-use') ? 1000 : 5000;
+			delay = (volumeData.status !== null && volumeData.status !== 'available' && volumeData.status !== 'in-use') ? 1000 : 3000;
 
 			// Hide other views
 			$('#error-view').addClass('hide');
@@ -128,8 +136,51 @@ var UI = (function () {
 				$('#volume-status').css('background-color', statuses[volumeData.status].color);
 			}
 
+			if (volumeData.status !== 'available') {
+				$('#attach-button')
+					.addClass('disabled')
+					.attr('data-toggle', '');
+			}
+			else {
+				$('#attach-button')
+					.removeClass('disabled')
+					.attr('data-toggle', 'modal');
+			}
+
 			// Set name max-width
 			setNameMaxWidth(NONUSABLEWIDTH);
+
+			if (volumeData.attachments.length > 0) {
+
+				instanceId = volumeData.attachments[0].server_id;
+				attachment = instanceById[instanceId] ? instanceById[instanceId] : '<i class="fa fa-spinner fa-pulse"></i>';
+
+				$('#volume-attachment span')
+					.attr('id', instanceId)
+					.addClass('list-group-item')
+					.html(attachment);
+
+				// Detach button
+				$('<button>')
+					.html('<i class="fa fa-chain-broken"></i>')
+					.addClass('btn btn-warning pull-right')
+					.attr('data-toggle', 'tooltip')
+					.attr('data-placement', 'bottom')
+					.appendTo('#volume-attachment span');
+
+				// Fix tooltip
+				$('#volume-attachment button').attr('data-original-title', 'Detach Volume');
+
+				// Detach click event
+				$('#volume-attachment button').click(function () {
+
+					var instanceId = $('#volume-attachment button').parent().attr('id');
+					this.detachVolume(instanceId);
+				}.bind(this));
+			}
+			else {
+				$('#volume-attachment span').text('None');
+			}
 
 			// Fix tooltips
 			$('#volume-status').attr('title', statusTooltip);
@@ -141,9 +192,6 @@ var UI = (function () {
 
 			// Initialize tooltips
 			$('[data-toggle="tooltip"]').tooltip();
-
-			// Build attachment list view
-			buildAttachmentsView.call(this, volumeData.attachments);
 
 			// Build
 			$('#detail-view').removeClass('hide');
@@ -273,56 +321,6 @@ var UI = (function () {
 		else {
 			$('#volume-name').css('max-width', 360 - nonUsableWidth);
 		}
-	};
-
-	buildAttachmentsView = function buildAttachmentsView (attachments) {
-
-		var attachmentsList = $('#attachments ul');
-		var liElement, instanceId, instanceName;
-		var detachVolumeClosure = this.detachVolume.bind(this);
-		var detachButton = $('<button>')
-							.html('<i class="fa fa-chain-broken"></i>')
-							.addClass('btn btn-warning pull-right')
-							.attr('data-toggle', 'tooltip')
-							.attr('data-placement', 'left');
-
-		// Empty previous list
-		$('#attachments ul').empty();
-
-		// Build
-		for (var attachment in attachments) {
-			instanceId = attachments[attachment].server_id;
-			liElement = $('<li>')
-						.attr('id', instanceId)
-						.addClass('list-group-item');
-
-			if (instanceById[instanceId]) {
-				liElement.html('<span>' + instanceById[instanceId] + '</span>');
-			}
-			else {
-				liElement.html('<i class="fa fa-spinner fa-pulse"></i>');
-			}
-
-			detachButton.appendTo(liElement);
-
-			// Insert in DOM
-			attachmentsList.append(liElement);
-
-		}
-
-		// Detach click event
-		$('#attachments button').click(function () {
-
-			var instanceId = $(this).parent().attr('id');
-			detachVolumeClosure(instanceId);
-		});
-
-		// Fix tooltip
-		$('#attachments button').attr('data-original-title', 'Detach Volume');
-
-		// Init tooltip
-		$('[data-toggle="tooltip"]').tooltip();
-
 	};
 
     initEvents = function initEvents () {

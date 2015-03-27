@@ -47,7 +47,7 @@ body {
 	margin-right: 10px;
 }
 
-li .btn-warning {
+.btn-warning {
 	padding: 0px 5px;
 }
 
@@ -158,4 +158,8 @@ li .btn-warning {
 	bottom: 0;
 	position: fixed;
 	background-color: white;
+}
+
+.list-group-item {
+	padding: 6px;
 }

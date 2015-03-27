@@ -289,7 +289,7 @@ describe('Test volume details', function () {
 		expect(setTimeoutSpy.calls.count()).toEqual(expectedCountTimeout);
 	});
 
-	it('should call Volume.getvolume 5 seconds after receiving the last update', function () {
+	it('should call Volume.getvolume 3 seconds after receiving the last update', function () {
 
         var expectedCount, callback;
         var volumeId = 'id';
@@ -302,7 +302,7 @@ describe('Test volume details', function () {
         callback();
 
         expect(JSTACK.Nova.Volume.getvolume.calls.count()).toEqual(expectedCount);
-        expect(setTimeoutSpy).toHaveBeenCalledWith(jasmine.any(Function), 5000);
+        expect(setTimeoutSpy).toHaveBeenCalledWith(jasmine.any(Function), 3000);
             
     });
 
