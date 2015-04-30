@@ -25,7 +25,7 @@ var UI = (function () {
 			'color': GREEN
 		},
 		'in-use': {
-			'class': 'glyphicon glyphicon-ok  fa-inverse',
+			'class': 'fa fa-link fa-inverse',
 			'color': GREEN
 		},
 		'attaching': {
