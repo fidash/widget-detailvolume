@@ -15,10 +15,10 @@ describe('Test volume details', function () {
 		JSTACK.Nova = jasmine.createSpyObj("Nova", ["attachvolume", "detachvolume", "getserverlist"]);
 		JSTACK.Nova.Volume = jasmine.createSpyObj("Volume", ["getvolume", "deletevolume", "createsnapshot", "deletesnapshot", "getsnapshot"]);
 
-		jasmine.getFixtures().fixturesPath = 'src/test/fixtures/html';
+		jasmine.getFixtures().fixturesPath = 'base/src/test/fixtures/html';
 		loadFixtures('defaultTemplate.html');
 
-		jasmine.getJSONFixtures().fixturesPath = 'src/test/fixtures/json';
+		jasmine.getJSONFixtures().fixturesPath = 'base/src/test/fixtures/json';
 		respServices = getJSONFixture('respServices.json');
 		defaultVolume = getJSONFixture('defaultVolume.json');
 		deletingVolume = getJSONFixture('deletingVolume.json');
