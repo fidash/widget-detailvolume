@@ -934,7 +934,7 @@ JSTACK.Nova = (function (JS, undefined) {
         if (!check()) {
             return;
         }
-        url = 'https://cloud.lab.fiware.org/Spain2/compute/v2/' + JSTACK.Keystone.params.access.token.tenant.id + '/servers';
+        url = 'https://cloud.lab.fiware.org/Spain2/compute/v2/' + JSTACK.Keystone.params.access.project.id + '/servers';
         if (detailed !== undefined && detailed) {
             url += '/detail';
         }
@@ -1140,7 +1140,7 @@ JSTACK.Nova = (function (JS, undefined) {
             }
         };
 
-        JS.Comm.post('https://cloud.lab.fiware.org/Spain2/compute/v2/' + JSTACK.Keystone.params.access.token.tenant.id + '/servers', data, JS.Keystone.params.token, onOK, onError);
+        JS.Comm.post('https://cloud.lab.fiware.org/Spain2/compute/v2/' + JSTACK.Keystone.params.access.project.id + '/servers', data, JS.Keystone.params.token, onOK, onError);
 
     };
     // This operation deletes a cloud server instance from the system.
@@ -1670,7 +1670,7 @@ JSTACK.Nova = (function (JS, undefined) {
             return;
         }
 
-        url = 'https://cloud.lab.fiware.org/Spain2/compute/v2/' + JS.Keystone.params.access.token.tenant.id + '/servers/' + id + '/os-volume_attachments';
+        url = 'https://cloud.lab.fiware.org/Spain2/compute/v2/' + JS.Keystone.params.access.project.id + '/servers/' + id + '/os-volume_attachments';
 
         if (volume_id === undefined || device === undefined) {
             return;
@@ -1706,7 +1706,7 @@ JSTACK.Nova = (function (JS, undefined) {
             return;
         }
 
-        url = 'https://cloud.lab.fiware.org/Spain2/compute/v2/' + JS.Keystone.params.access.token.tenant.id + '/servers/' + id + '/os-volume_attachments/' + volume_id;
+        url = 'https://cloud.lab.fiware.org/Spain2/compute/v2/' + JS.Keystone.params.access.project.id + '/servers/' + id + '/os-volume_attachments/' + volume_id;
 
         if (volume_id === undefined) {
             return;
@@ -2166,7 +2166,7 @@ JSTACK.Nova.Volume = (function (JS, undefined) {
         if (JS.Keystone !== undefined && JS.Keystone.params.currentstate === JS.Keystone.STATES.AUTHENTICATED) {
             var service = JS.Keystone.getservice("volume");
             //params.url = service.endpoints[0][params.endpointType];
-            params.url = 'https://cloud.lab.fiware.org/Spain2/volume/v1/' + JS.Keystone.params.access.token.tenant.id;
+            params.url = 'https://cloud.lab.fiware.org/Spain2/volume/v1/' + JS.Keystone.params.access.project.id;
             return true;
         }
         return false;
