@@ -426,6 +426,8 @@ var UI = (function () {
 	receiveVolumeId = function receiveVolumeId (wiringData) {
 		wiringData = JSON.parse(wiringData);
 
+		var region = wiringData.region;
+
 		JSTACK.Keystone.params.access = wiringData.access;
 		JSTACK.Keystone.params.token = wiringData.token;
 		JSTACK.Keystone.params.currentstate = 2;
@@ -433,7 +435,7 @@ var UI = (function () {
 		// Get instances list
 		JSTACK.Nova.getserverlist(true, null, saveInstanceList.bind(this), onError);
 
-		this.volumeDetails = new VolumeDetails(wiringData.id);
+		this.volumeDetails = new VolumeDetails(wiringData.id, region);
 		error = false;
 
 		if (!prevRefresh) {
