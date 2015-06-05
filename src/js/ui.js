@@ -433,7 +433,7 @@ var UI = (function () {
 		JSTACK.Keystone.params.currentstate = 2;
 
 		// Get instances list
-		JSTACK.Nova.getserverlist(true, null, saveInstanceList.bind(this), onError);
+		JSTACK.Nova.getserverlist(true, null, saveInstanceList.bind(this), onError, region);
 
 		this.volumeDetails = new VolumeDetails(wiringData.id, region);
 		error = false;
