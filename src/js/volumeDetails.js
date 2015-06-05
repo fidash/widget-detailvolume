@@ -19,11 +19,11 @@ var VolumeDetails = (function (JSTACK) {
 
 	VolumeDetails.prototype = {
 		getVolumeDetails: function getVolumeDetails (callback, onError) {
-			JSTACK.Nova.Volume.getvolume(this.volumeId, callback, onError, this.region);
+			JSTACK.Cinder.getvolume(this.volumeId, callback, onError, this.region);
 		},
 
 		deleteVolume: function deleteVolume (callback, onError) {
-			JSTACK.Nova.Volume.deletevolume(this.volumeId, callback, onError, this.region);
+			JSTACK.Cinder.deletevolume(this.volumeId, callback, onError, this.region);
 		},
 
 		attachVolume: function attachVolume (instanceId, device, callback, onError) {
@@ -35,15 +35,15 @@ var VolumeDetails = (function (JSTACK) {
 		},
 
 		createSnapshot: function createSnapshot (name, description, callback, error) {
-			JSTACK.Nova.Volume.createsnapshot(this.volumeId, name, description, callback, error, this.region);
+			JSTACK.Cinder.createsnapshot(this.volumeId, name, description, callback, error, this.region);
 		},
 
 		deleteSnapshot: function deleteSnapshot (snapshotId, callback, error) {
-			JSTACK.Nova.Volume.deletesnapshot(snapshotId, callback, error, this.region);
+			JSTACK.Cinder.deletesnapshot(snapshotId, callback, error, this.region);
 		},
 
 		getSnapshotList: function getSnapshotList (callback, error) {
-			JSTACK.Nova.Volume.getsnapshotlist(false, callback, error, this.region);
+			JSTACK.Cinder.getsnapshotlist(false, callback, error, this.region);
 		}
 	};
 

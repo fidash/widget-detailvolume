@@ -13,7 +13,7 @@ describe('Test volume details', function () {
 
 		JSTACK.Keystone = jasmine.createSpyObj("Keystone", ["init", "authenticate", "gettenants", "params"]);
 		JSTACK.Nova = jasmine.createSpyObj("Nova", ["attachvolume", "detachvolume", "getserverlist"]);
-		JSTACK.Nova.Volume = jasmine.createSpyObj("Volume", ["getvolume", "deletevolume", "createsnapshot", "deletesnapshot", "getsnapshot"]);
+		JSTACK.Cinder = jasmine.createSpyObj("Cinder", ["getvolume", "deletevolume", "createsnapshot", "deletesnapshot", "getsnapshot"]);
 
 		jasmine.getFixtures().fixturesPath = 'base/src/test/fixtures/html';
 		loadFixtures('defaultTemplate.html');
@@ -44,7 +44,7 @@ describe('Test volume details', function () {
 
 		var callback;
 
-		callback = JSTACK.Nova.Volume.getvolume.calls.mostRecent().args[1];
+		callback = JSTACK.Cinder.getvolume.calls.mostRecent().args[1];
 		callback(response);
 	}
 
@@ -52,26 +52,26 @@ describe('Test volume details', function () {
 	********************************************Tests*********************************************
 	*********************************************************************************************/
 
-	it('should call JSTACK.Nova.Volume.getvolume when receives a wiring input event', function () {
+	it('should call JSTACK.Cinder.getvolume when receives a wiring input event', function () {
 
 		var volumeId = 'id';
 		
 		receiveWiringEvent(volumeId);
 
-		expect(JSTACK.Nova.Volume.getvolume).toHaveBeenCalled();
+		expect(JSTACK.Cinder.getvolume).toHaveBeenCalled();
 		expect(ui.volumeDetails).toExist();
 	});
 
 
 
-	it('should call JSTACK.Nova.Volume.deletevolume', function () {
+	it('should call JSTACK.Cinder.deletevolume', function () {
 
 		var volumeId = 'id';
 
 		receiveWiringEvent(volumeId);
 		ui.deleteVolume();
 
-		expect(JSTACK.Nova.Volume.deletevolume).toHaveBeenCalled();
+		expect(JSTACK.Cinder.deletevolume).toHaveBeenCalled();
 		expect(ui.volumeDetails).toExist();
 	});
 
@@ -83,7 +83,7 @@ describe('Test volume details', function () {
 
 		receiveWiringEvent(volumeId);
 		getVolumeDetailsSuccess(deletingVolume);
-		errorCallback = JSTACK.Nova.Volume.getvolume.calls.mostRecent().args[2];
+		errorCallback = JSTACK.Cinder.getvolume.calls.mostRecent().args[2];
 		errorCallback({message: '404 Error', body: 'Not found.'});
 
 		expect(buildDefaultViewSpy).toHaveBeenCalled();
@@ -96,7 +96,7 @@ describe('Test volume details', function () {
 		var successCallback;
 
 		receiveWiringEvent(volumeId);
-		successCallback = JSTACK.Nova.Volume.getvolume.calls.mostRecent().args[1];
+		successCallback = JSTACK.Cinder.getvolume.calls.mostRecent().args[1];
 		successCallback(defaultVolume);
 
 		expect(buildDetailViewSpy).toHaveBeenCalled();
@@ -122,16 +122,16 @@ describe('Test volume details', function () {
 		expect(MashupPlatform.widget.log.calls.mostRecent().args).toEqual(['Error: No volume received yet.']);
 	});
 
-	it('should call JSTACK.Nova.Volume.getvolume when refreshing', function () {
+	it('should call JSTACK.Cinder.getvolume when refreshing', function () {
 		
 		var volumeId = 'f3c6536a-4604-47d7-96b7-daf7ff1455ca';
 		var expectedCount;
 
 		receiveWiringEvent(volumeId);
-		expectedCount = JSTACK.Nova.Volume.getvolume.calls.count() + 1;
+		expectedCount = JSTACK.Cinder.getvolume.calls.count() + 1;
 		ui.refresh();
 
-		expect(JSTACK.Nova.Volume.getvolume.calls.count()).toBe(expectedCount);
+		expect(JSTACK.Cinder.getvolume.calls.count()).toBe(expectedCount);
 	});
 
 	it('should call the error function when the getVolumeDetails call fails', function () {
@@ -140,7 +140,7 @@ describe('Test volume details', function () {
 		var errorCallback;
 
 		receiveWiringEvent(volumeId);
-		errorCallback = JSTACK.Nova.Volume.getvolume.calls.mostRecent().args[2];
+		errorCallback = JSTACK.Cinder.getvolume.calls.mostRecent().args[2];
 		errorCallback('Call error function');
 
 		expect(MashupPlatform.widget.log).toHaveBeenCalledWith('Error: "Call error function"');
@@ -220,7 +220,7 @@ describe('Test volume details', function () {
 		};
 		
 		receiveWiringEvent(volumeId);
-		errorCallback = JSTACK.Nova.Volume.getvolume.calls.mostRecent().args[2];
+		errorCallback = JSTACK.Cinder.getvolume.calls.mostRecent().args[2];
 		errorCallback(message);
 
 		expect(buildErrorViewSpy).toHaveBeenCalled();
@@ -239,7 +239,7 @@ describe('Test volume details', function () {
 
 	});
 
-	it('should call JSTACK.Nova.Volume.getvolume when a click event is triggered on the refresh button', function () {
+	it('should call JSTACK.Cinder.getvolume when a click event is triggered on the refresh button', function () {
 
 		var volumeId = 'id';
 		var eventSpy = spyOnEvent('#refresh-button', 'click');
@@ -250,16 +250,16 @@ describe('Test volume details', function () {
 		getVolumeDetailsSuccess(defaultVolume);
 
 		expectedCountTimeout = setTimeoutSpy.calls.count();
-		expectedCountImageDetails = JSTACK.Nova.Volume.getvolume.calls.count() + 1;
+		expectedCountImageDetails = JSTACK.Cinder.getvolume.calls.count() + 1;
 		$('#refresh-button').trigger('click');
 
 		expect(eventSpy).toHaveBeenTriggered();
-		expect(JSTACK.Nova.Volume.getvolume.calls.count()).toEqual(expectedCountImageDetails);
+		expect(JSTACK.Cinder.getvolume.calls.count()).toEqual(expectedCountImageDetails);
 		expect(setTimeoutSpy.calls.count()).toEqual(expectedCountTimeout);
 
 	});
 
-	it('should call JSTACK.Nova.Volume.deletevolume when a click event is triggered on the terminate button', function () {
+	it('should call JSTACK.Cinder.deletevolume when a click event is triggered on the terminate button', function () {
 		
 		var volumeId = 'id';
 		var eventSpy = spyOnEvent('#volume-terminate', 'click');
@@ -268,11 +268,11 @@ describe('Test volume details', function () {
 		receiveWiringEvent(volumeId);
 		getVolumeDetailsSuccess(defaultVolume);
 
-		expectedCountDeleteVolume = JSTACK.Nova.Volume.deletevolume.calls.count() + 1;
+		expectedCountDeleteVolume = JSTACK.Cinder.deletevolume.calls.count() + 1;
 		$('#volume-terminate').trigger('click');
 
 		expect(eventSpy).toHaveBeenTriggered();
-		expect(JSTACK.Nova.Volume.deletevolume.calls.count()).toEqual(expectedCountDeleteVolume);
+		expect(JSTACK.Cinder.deletevolume.calls.count()).toEqual(expectedCountDeleteVolume);
 	});
 
 	it('should not call setTimeout the second time a wiring event is received', function () {
@@ -296,12 +296,12 @@ describe('Test volume details', function () {
         var setTimeoutSpy = spyOn(window, 'setTimeout');
 
         receiveWiringEvent(volumeId);
-        expectedCount = JSTACK.Nova.Volume.getvolume.calls.count() + 1;
+        expectedCount = JSTACK.Cinder.getvolume.calls.count() + 1;
 		getVolumeDetailsSuccess(defaultVolume);
         callback = setTimeoutSpy.calls.mostRecent().args[0];
         callback();
 
-        expect(JSTACK.Nova.Volume.getvolume.calls.count()).toEqual(expectedCount);
+        expect(JSTACK.Cinder.getvolume.calls.count()).toEqual(expectedCount);
         expect(setTimeoutSpy).toHaveBeenCalledWith(jasmine.any(Function), 3000);
             
     });
@@ -314,7 +314,7 @@ describe('Test volume details', function () {
     	var errorCallback;
 
     	receiveWiringEvent(volumeId);
-    	errorCallback = JSTACK.Nova.Volume.getvolume.calls.mostRecent().args[2];
+    	errorCallback = JSTACK.Cinder.getvolume.calls.mostRecent().args[2];
     	errorCallback('Error');
     	getVolumeDetailsSuccess(defaultVolume);
 
