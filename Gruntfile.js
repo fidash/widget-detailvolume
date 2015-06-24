@@ -106,6 +106,12 @@ module.exports = function(grunt) {
                 src: ['src/test/**/*.js', '!src/test/fixtures/']
             }
         }
+    },
+
+    wirecloud: {
+      publish: {
+        file: 'build/<%= pkg.vendor %>_<%= pkg.name %>_<%= pkg.version %>-dev.wgt'
+      }
     }
   });
 
@@ -118,6 +124,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-gitinfo');
   grunt.loadNpmTasks('grunt-text-replace');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-wirecloud');
 
   grunt.registerTask('manifest', 'Creates a manifest.json file', function() {
 
