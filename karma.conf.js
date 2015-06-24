@@ -17,6 +17,7 @@
         'node_modules/jquery/dist/jquery.js',
         'node_modules/bootstrap/dist/js/bootstrap.min.js',
         'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
+        'node_modules/jasmine-utils/src/jasmine-utils.js',
 
         // Helper files
         'src/test/helpers/*.js',

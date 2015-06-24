@@ -2,7 +2,15 @@
   "volume":{  
     "status":"in-use",
     "display_name":"DAWVol",
-    "attachments":[],
+    "attachments":[  
+      {  
+        "host_name":null,
+        "device":"/dev/vdc",
+        "server_id":"8dcc8045-a133-4f1b-b0da-f657de9ada06",
+        "id":"87bf330e-bb2d-45d1-8f97-7c92e72beec1",
+        "volume_id":"87bf330e-bb2d-45d1-8f97-7c92e72beec1"
+      }
+    ],
     "availability_zone":"nova",
     "bootable":"false",
     "encrypted":false,
@@ -14,7 +22,10 @@
     "volume_type":"None",
     "snapshot_id":null,
     "source_volid":null,
-    "metadata":{},
+    "metadata":{  
+      "readonly":"False",
+      "attached_mode":"rw"
+    },
     "id":"87bf330e-bb2d-45d1-8f97-7c92e72beec1",
     "size":15
   }

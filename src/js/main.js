@@ -1,7 +1,9 @@
-/* global UI */
+/* global VolumeDetails */
 
 window.addEventListener('DOMContentLoaded', function () {
 	"use strict";
 
-	var ui = new UI();
+	var volumeDetails = new VolumeDetails();
+	volumeDetails.init();
+
 }, false);

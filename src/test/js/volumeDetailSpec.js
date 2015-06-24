@@ -1,19 +1,15 @@
-/* global VolumeDetails UI receiveVolumeId */
+/* global VolumeDetails */
 
-describe('Test volume details', function () {
+describe('Volume Details', function () {
 	"use strict";
 
 	var respServices = null;
 	var defaultVolume = null;
 	var deletingVolume = null;
-	var ui;
+	var volumeDetails;
 
 
 	beforeEach(function () {
-
-		JSTACK.Keystone = jasmine.createSpyObj("Keystone", ["init", "authenticate", "gettenants", "params"]);
-		JSTACK.Nova = jasmine.createSpyObj("Nova", ["attachvolume", "detachvolume", "getserverlist"]);
-		JSTACK.Cinder = jasmine.createSpyObj("Cinder", ["getvolume", "deletevolume", "createsnapshot", "deletesnapshot", "getsnapshot"]);
 
 		jasmine.getFixtures().fixturesPath = 'base/src/test/fixtures/html';
 		loadFixtures('defaultTemplate.html');
@@ -23,7 +19,18 @@ describe('Test volume details', function () {
 		defaultVolume = getJSONFixture('defaultVolume.json');
 		deletingVolume = getJSONFixture('deletingVolume.json');
 
-		ui = new UI();
+		volumeDetails = new VolumeDetails();
+		volumeDetails.init();
+
+	});
+
+	afterEach(function () {
+
+		MashupPlatform.reset();
+		jasmine.resetAll(JSTACK.Keystone);
+		jasmine.resetAll(JSTACK.Nova);
+		jasmine.resetAll(JSTACK.Cinder);
+
 	});
 
 	function receiveWiringEvent (volumeId) {
@@ -31,20 +38,20 @@ describe('Test volume details', function () {
 		var access = respServices.access;
 		var wiringData = {
 			'id': volumeId,
-			'access': access
+			'access': access,
+			'region': 'Spain2'
 		};
 
 		wiringData = JSON.stringify(wiringData);
 		var receiveVolumeId = MashupPlatform.wiring.registerCallback.calls.mostRecent().args[1];		
 
-		receiveVolumeId.call(ui, wiringData);
+		receiveVolumeId.call(volumeDetails, wiringData);
 	}
 
 	function getVolumeDetailsSuccess (response) {
 
-		var callback;
-
-		callback = JSTACK.Cinder.getvolume.calls.mostRecent().args[1];
+		var callback = JSTACK.Cinder.getvolume.calls.mostRecent().args[1];
+		
 		callback(response);
 	}
 
@@ -59,7 +66,6 @@ describe('Test volume details', function () {
 		receiveWiringEvent(volumeId);
 
 		expect(JSTACK.Cinder.getvolume).toHaveBeenCalled();
-		expect(ui.volumeDetails).toExist();
 	});
 
 
@@ -69,15 +75,28 @@ describe('Test volume details', function () {
 		var volumeId = 'id';
 
 		receiveWiringEvent(volumeId);
-		ui.deleteVolume();
+		volumeDetails.deleteVolume();
 
 		expect(JSTACK.Cinder.deletevolume).toHaveBeenCalled();
-		expect(ui.volumeDetails).toExist();
+	});
+
+	it('should build the default view after deleting the volume', function () {
+		var buildDefaultViewSpy = spyOn(UI, 'buildDefaultView');
+		var deleteCallback;
+		var volumeId = 'id';
+
+		receiveWiringEvent(volumeId);
+		volumeDetails.deleteVolume();
+		deleteCallback = JSTACK.Cinder.deletevolume.calls.mostRecent().args[1];
+		deleteCallback();
+
+		expect(buildDefaultViewSpy).toHaveBeenCalled();
+		expect(volumeDetails.error).toBe(true);
 	});
 
 	it('should build the default view after receiving a 404 error with the deleting flag active', function () {
 
-		var buildDefaultViewSpy = spyOn(ui, 'buildDefaultView').and.callThrough();
+		var buildDefaultViewSpy = spyOn(UI, 'buildDefaultView').and.callThrough();
 		var volumeId = 'id';
 		var errorCallback;
 
@@ -91,7 +110,7 @@ describe('Test volume details', function () {
 
 	it('should call buildDetailView after successfully getting an volume\'s details', function () {
 
-		var buildDetailViewSpy = spyOn(ui, 'buildDetailView');
+		var buildDetailViewSpy = spyOn(UI, 'buildDetailView');
 		var volumeId = 'f3c6536a-4604-47d7-96b7-daf7ff1455ca';
 		var successCallback;
 
@@ -104,34 +123,27 @@ describe('Test volume details', function () {
 
 	it('should call the error function when refresh is called without a volume', function () {
 
-		var expectedCount = MashupPlatform.widget.log.calls.count() + 1;
+		volumeDetails.getVolumeDetails();
 
-		ui.refresh();
-
-		expect(MashupPlatform.widget.log.calls.count()).toBe(expectedCount);
-		expect(MashupPlatform.widget.log.calls.mostRecent().args).toEqual(['Error: No volume received yet.']);
+		expect(MashupPlatform.widget.log).toHaveBeenCalledWith('Error: "No volume received yet."');
 	});
 
 	it('should call the error function when deleteVolume is called without a volume', function () {
 
-		var expectedCount = MashupPlatform.widget.log.calls.count() + 1;
+		volumeDetails.deleteVolume();
 
-		ui.deleteVolume();
+		expect(MashupPlatform.widget.log).toHaveBeenCalledWith('Error: "No volume received yet."');
 
-		expect(MashupPlatform.widget.log.calls.count()).toBe(expectedCount);
-		expect(MashupPlatform.widget.log.calls.mostRecent().args).toEqual(['Error: No volume received yet.']);
 	});
 
 	it('should call JSTACK.Cinder.getvolume when refreshing', function () {
 		
 		var volumeId = 'f3c6536a-4604-47d7-96b7-daf7ff1455ca';
-		var expectedCount;
 
 		receiveWiringEvent(volumeId);
-		expectedCount = JSTACK.Cinder.getvolume.calls.count() + 1;
-		ui.refresh();
+		volumeDetails.getVolumeDetails();
 
-		expect(JSTACK.Cinder.getvolume.calls.count()).toBe(expectedCount);
+		expect(JSTACK.Cinder.getvolume).toHaveBeenCalled();
 	});
 
 	it('should call the error function when the getVolumeDetails call fails', function () {
@@ -146,88 +158,7 @@ describe('Test volume details', function () {
 		expect(MashupPlatform.widget.log).toHaveBeenCalledWith('Error: "Call error function"');
 	});
 
-	it('should correctly build the detail view', function () {
-
-
-		var volumeData = defaultVolume.volume;
-		var fields = {
-            'id': volumeData.id,
-            'availability-zone': volumeData.availability_zone,
-            'size': volumeData.size +' GB',
-            'created': volumeData.created_at,
-            'description': volumeData.display_description
-        };
-        var volumeName = volumeData.display_name;
-        var statusTitle = 'Status: ' + volumeData.status;
-
-        ui.buildDetailView(volumeData);
-
-        for (var field in fields) {
-        	// toContainText() only checks if the given string is a substring of the node's text
-        	expect($('#volume-' + field + ' > span').text()).toEqual(fields[field]);
-        }
-
-        expect($('#volume-name')).toContainText(volumeName);
-        expect($('#volume-status').attr('data-original-title')).toEqual(statusTitle);
-	});
-
-	it('should change the height value after been given a new height', function () {
-
-		var callback = MashupPlatform.widget.context.registerCallback.calls.mostRecent().args[0];
-		var newValues = {
-			'heightInPixels': 400
-		};
-
-		callback(newValues);
-		
-		expect($('body').attr('height')).toBe(newValues.heightInPixels.toString());
-	});
-
-	it('should change the width value after been given a new width', function () {
-
-		var callback = MashupPlatform.widget.context.registerCallback.calls.mostRecent().args[0];
-		var newValues = {
-			'widthInPixels': 800
-		};
-
-		callback(newValues);
-		
-		expect($('body').attr('width')).toBe(newValues.widthInPixels.toString());
-	});
-
-	it('should not change size after been given an empty new values set', function () {
-
-		var callback = MashupPlatform.widget.context.registerCallback.calls.mostRecent().args[0];
-		var newValues = {};
-		var bodyExpectedWidth = $('body').attr('width');
-		var bodyExpectedHeight = $('body').attr('height');
-
-
-		callback(newValues);
-		
-		expect($('body').attr('width')).toBe(bodyExpectedWidth);
-		expect($('body').attr('height')).toBe(bodyExpectedHeight);
-	});
-
-	it('should build the error view with the correct message', function () {
-
-		var errorCallback;
-		var volumeId = 'id';
-		var buildErrorViewSpy = spyOn(ui, 'buildErrorView').and.callThrough();
-		var message = {
-			'message': '500 Error',
-			'body': 'Stack trace'
-		};
-		
-		receiveWiringEvent(volumeId);
-		errorCallback = JSTACK.Cinder.getvolume.calls.mostRecent().args[2];
-		errorCallback(message);
-
-		expect(buildErrorViewSpy).toHaveBeenCalled();
-		expect($('#error-view')).toContainText('500 Error');
-	});
-
-	it('should set the automatic refreshing delay to 1 seconds while status is diffeerent from available or in-use', function () {
+	it('should set the automatic refreshing delay to 1 seconds when status is different from available or in-use', function () {
 
 		var setTimeoutSpy = spyOn(window, 'setTimeout');
 		var volumeId = 'id';
@@ -237,42 +168,6 @@ describe('Test volume details', function () {
 		
 		expect(setTimeoutSpy).toHaveBeenCalledWith(jasmine.any(Function), 1000);
 
-	});
-
-	it('should call JSTACK.Cinder.getvolume when a click event is triggered on the refresh button', function () {
-
-		var volumeId = 'id';
-		var eventSpy = spyOnEvent('#refresh-button', 'click');
-		var setTimeoutSpy = spyOn(window, 'setTimeout');
-		var expectedCountTimeout, expectedCountImageDetails;
-
-		receiveWiringEvent(volumeId);
-		getVolumeDetailsSuccess(defaultVolume);
-
-		expectedCountTimeout = setTimeoutSpy.calls.count();
-		expectedCountImageDetails = JSTACK.Cinder.getvolume.calls.count() + 1;
-		$('#refresh-button').trigger('click');
-
-		expect(eventSpy).toHaveBeenTriggered();
-		expect(JSTACK.Cinder.getvolume.calls.count()).toEqual(expectedCountImageDetails);
-		expect(setTimeoutSpy.calls.count()).toEqual(expectedCountTimeout);
-
-	});
-
-	it('should call JSTACK.Cinder.deletevolume when a click event is triggered on the terminate button', function () {
-		
-		var volumeId = 'id';
-		var eventSpy = spyOnEvent('#volume-terminate', 'click');
-		var expectedCountDeleteVolume;
-
-		receiveWiringEvent(volumeId);
-		getVolumeDetailsSuccess(defaultVolume);
-
-		expectedCountDeleteVolume = JSTACK.Cinder.deletevolume.calls.count() + 1;
-		$('#volume-terminate').trigger('click');
-
-		expect(eventSpy).toHaveBeenTriggered();
-		expect(JSTACK.Cinder.deletevolume.calls.count()).toEqual(expectedCountDeleteVolume);
 	});
 
 	it('should not call setTimeout the second time a wiring event is received', function () {
@@ -289,7 +184,7 @@ describe('Test volume details', function () {
 		expect(setTimeoutSpy.calls.count()).toEqual(expectedCountTimeout);
 	});
 
-	it('should call Volume.getvolume 3 seconds after receiving the last update', function () {
+	it('should call Volume.getvolume 4 seconds after receiving the last update', function () {
 
         var expectedCount, callback;
         var volumeId = 'id';
@@ -302,7 +197,7 @@ describe('Test volume details', function () {
         callback();
 
         expect(JSTACK.Cinder.getvolume.calls.count()).toEqual(expectedCount);
-        expect(setTimeoutSpy).toHaveBeenCalledWith(jasmine.any(Function), 3000);
+        expect(setTimeoutSpy).toHaveBeenCalledWith(jasmine.any(Function), 4000);
             
     });
 
@@ -320,4 +215,46 @@ describe('Test volume details', function () {
 
     	expect(setTimeoutSpy.calls.count()).toEqual(expectedCount);
     });
+
+    it('should call JSTACK.Nova.attachvolume', function () {
+    	var volumeId = 'id';
+
+		receiveWiringEvent(volumeId);
+		volumeDetails.attachVolume('instanceId', 'device');
+
+		expect(JSTACK.Nova.attachvolume).toHaveBeenCalled();
+    });
+
+    it('should call the error function when attach is called without volume', function () {
+    	volumeDetails.attachVolume();
+
+		expect(MashupPlatform.widget.log).toHaveBeenCalledWith('Error: "No volume received yet."');
+    });
+
+    it('should call JSTACK.Nova.detachvolume', function () {
+    	var volumeId = 'id';
+
+		receiveWiringEvent(volumeId);
+		volumeDetails.detachVolume('instanceId');
+
+		expect(JSTACK.Nova.detachvolume).toHaveBeenCalled();
+    });
+
+    it('should the error function when detach is called without a volume', function () {
+    	volumeDetails.detachVolume();
+
+		expect(MashupPlatform.widget.log).toHaveBeenCalledWith('Error: "No volume received yet."');
+    });
+
+    it('should save the instance list with each one asociated with its ID', function () {
+    	var volumeId = 'id';
+    	var saveList;
+
+		receiveWiringEvent(volumeId);
+		saveList = JSTACK.Nova.getserverlist.calls.mostRecent().args[2];
+		saveList({servers: [{'id':'id1', 'name':'name1'}]});
+
+		expect(volumeDetails.instanceById).toEqual({'id1':'name1'});
+    });
+
 });

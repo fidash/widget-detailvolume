@@ -6,6 +6,7 @@
     "forin": false,
     "undef": true,
     "unused": false,
+    "validthis": true,
     "prototypejs": false,
     "globalstrict": false,
     "strict": true,

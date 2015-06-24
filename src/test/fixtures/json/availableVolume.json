@@ -1,6 +1,6 @@
 {  
   "volume":{  
-    "status":"in-use",
+    "status":"available",
     "display_name":"DAWVol",
     "attachments":[],
     "availability_zone":"nova",
