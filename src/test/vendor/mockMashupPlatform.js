@@ -66,7 +66,7 @@ var MockMP = {};
         }
 
         spySet.forEach(function (spy) {
-            spy.reset();
+            spy.calls.reset();
         });
     };
 
