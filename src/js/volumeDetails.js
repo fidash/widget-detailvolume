@@ -84,14 +84,14 @@ var VolumeDetails = (function (JSTACK) {
 		JSTACK.Keystone.params.token = wiringData.token;
 		JSTACK.Keystone.params.currentstate = 2;
 
-		// Get instances list
-		JSTACK.Nova.getserverlist(true, null, saveInstanceList.bind(this), onError.bind(this), this.region);
-
 		this.region = wiringData.region;
 		this.volumeId = wiringData.id;
 		this.error = false;
 		this.getVolumeDetails();
 		this.firstRefresh = false;
+
+		// Get instances list
+		JSTACK.Nova.getserverlist(true, null, saveInstanceList.bind(this), onError.bind(this), this.region);
 
 	}
 
