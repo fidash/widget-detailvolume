@@ -124,6 +124,8 @@ var UI = (function () {
 			callbacks.delete();
 		});
 
+		UI.buildDefaultView();
+
 	}
 
 	function buildDetailView (instanceById, detach, volumeData) {
