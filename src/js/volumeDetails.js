@@ -143,7 +143,7 @@ var VolumeDetails = (function (JSTACK) {
 				return;
 			}
 
-			JSTACK.Nova.attachvolume(instanceId, this.volumeId, device, this.getVolumeDetails, onError.bind(this), this.region);
+			JSTACK.Nova.attachvolume(instanceId, this.volumeId, device, this.getVolumeDetails.bind(this), onError.bind(this), this.region);
 		},
 
 		detachVolume: function (instanceId) {
@@ -153,7 +153,7 @@ var VolumeDetails = (function (JSTACK) {
 				return;
 			}
 
-			JSTACK.Nova.detachvolume(instanceId, this.volumeId, this.getVolumeDetails, onError.bind(this), this.region);
+			JSTACK.Nova.detachvolume(instanceId, this.volumeId, this.getVolumeDetails.bind(this), onError.bind(this), this.region);
 		}
 
 		/*createSnapshot: function () {

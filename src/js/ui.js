@@ -114,10 +114,12 @@ var UI = (function () {
 			callbacks.refresh();
 		});
 
-		$('#attach-volume').click(function () {
+		$('#attach-volume').click(function (e) {
 			var instanceId = $('#id_instance').val();
 			var device = $('#id_device').val();
 			callbacks.attach(instanceId, device);
+
+			e.preventDefault();
 		});
 
 		$('#volume-terminate').click(function () {
