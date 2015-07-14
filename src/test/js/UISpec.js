@@ -244,4 +244,12 @@ describe("User Interface", function () {
 		expect('#volume-attachment span').toContainText('Hi');
 	});
 
+	it('should call buildDefaultView in UI.init', function () {
+        var buildDefaultViewSpy = spyOn(UI, 'buildDefaultView');
+
+        UI.init();
+
+        expect(buildDefaultViewSpy).toHaveBeenCalled();
+    });
+
 });
