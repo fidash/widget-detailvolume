@@ -1,4 +1,4 @@
-#Volume Details Widget
+#Detail Volume Widget
 
 This project is part of [FIWARE](https://www.fiware.org/). This widget is part of FI-Dash component included in FIWARE.
 
@@ -7,7 +7,7 @@ The widget displays all the attributes of an OpenStack Volume available to the u
 
 ## Wiring endpoints
 
-The Volume Details widget has the following wiring endpoints:
+The Detail Volume widget has the following wiring endpoints:
 
 |Way|Name|Type|Description|Label|Friendcode|
 |:--:|:--:|:--:|:--:|:--:|:--:|

@@ -1,7 +1,7 @@
 {
-  "name": "VolumeDetails",
+  "name": "DetailVolume",
   "homepage": "https://github.com/fidash/widget-volumedetails",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "vendor": "UPM-ETSIINF",
   "author": "CoNWeT Lab., Universidad Politecnica de Madrid",
   "description": "A widget showing a list of current volumes available for a user of an openstack instance.",
