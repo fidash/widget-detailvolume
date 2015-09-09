@@ -30,7 +30,7 @@ var VolumeDetails = (function (JSTACK) {
 		// Adjust refresh delay
 		this.delay = (volumeData.volume.status !== null && volumeData.volume.status !== 'available' && volumeData.volume.status !== 'in-use') ? 1000 : 4000;
 
-		UI.buildDetailView(this.instanceById, this.detachVolume, volumeData.volume);
+		UI.buildDetailView(this.instanceById, this.detachVolume.bind(this), volumeData.volume);
 		
 		// Keep refreshing if no errors
 		if (!this.error && autoRefresh) {
