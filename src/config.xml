@@ -5,7 +5,7 @@
     <email>bgrana@conwet.com</email>
     <image>images/catalogue.png</image>
     <smartphoneimage>images/catalogueSmartphone.png</smartphoneimage>
-    <description>Widget that shows the details of an openStack volume</description>
+    <description>FIDASH widget that shows the details of an openStack volume</description>
     <authors>bgrana</authors>
   </details>
   <requirements>
