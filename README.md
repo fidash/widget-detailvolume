@@ -9,6 +9,6 @@ The widget displays all the attributes of an OpenStack Volume available to the u
 
 The Detail Volume widget has the following wiring endpoints:
 
-|Way|Name|Type|Description|Label|Friendcode|
-|:--:|:--:|:--:|:--:|:--:|:--:|
-|input|volume_id|text|Receives volume ID and OpenStack service token.|Volume ID|volume_id|
+|Label|Name|Friendcode|Type|Description|
+|:--:|:--:|:--:|:--:|:--:|
+|Volume ID|volume_id|volume_id|text|Receives volume ID and OpenStack service token.|
