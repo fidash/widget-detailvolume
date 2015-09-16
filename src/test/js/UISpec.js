@@ -69,7 +69,7 @@ describe("User Interface", function () {
 		var fields = {
             'id': volumeData.id,
             'availability-zone': volumeData.availability_zone,
-            'size': volumeData.size +' GB',
+            'size': volumeData.size +' GiB',
             'created': volumeData.created_at,
             'description': volumeData.display_description
         };

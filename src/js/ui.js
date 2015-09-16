@@ -133,7 +133,7 @@ var UI = (function () {
 	function buildDetailView (instanceById, detach, volumeData) {
 
 		var statusTooltip = 'Status: ' + volumeData.status;
-		var displayableSize = volumeData.size + ' GB';
+		var displayableSize = volumeData.size + ' GiB';
 		var attachment, instanceId;
 
 		// Remove previous attachments
