@@ -1,4 +1,4 @@
-/* global VolumeDetails, MashupPlatform, JSTACK  */
+/* global VolumeDetails, MashupPlatform, JSTACK, Utils  */
 
 var UI = (function () {
 	'use strict';
@@ -134,6 +134,7 @@ var UI = (function () {
 
 		var statusTooltip = 'Status: ' + volumeData.status;
 		var displayableSize = volumeData.size + ' GiB';
+		var displayableCreated = Utils.formatDate(volumeData.created_at);
 		var attachment, instanceId;
 
 		// Remove previous attachments
@@ -146,7 +147,7 @@ var UI = (function () {
 		$('#volume-id > span').text(volumeData.id);
 		$('#volume-availability-zone > span').text(volumeData.availability_zone);
 		$('#volume-size > span').text(displayableSize);
-		$('#volume-created > span').text(volumeData.created_at);
+		$('#volume-created > span').text(displayableCreated);
 		$('#volume-description > span').text(volumeData.display_description);
 		
 		// Status

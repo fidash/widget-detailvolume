@@ -70,7 +70,7 @@ describe("User Interface", function () {
             'id': volumeData.id,
             'availability-zone': volumeData.availability_zone,
             'size': volumeData.size +' GiB',
-            'created': volumeData.created_at,
+            'created': (new Date(volumeData.created_at)).toUTCString(),
             'description': volumeData.display_description
         };
         var volumeName = volumeData.display_name;
