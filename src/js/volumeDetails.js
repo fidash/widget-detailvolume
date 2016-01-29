@@ -138,16 +138,14 @@ var VolumeDetails = (function (JSTACK) {
                     // MORE
 
                     if (this.hasReceivedVolume()) {
-                        this.error = false;
                         this.getVolumeDetails();
-                        this.firstRefresh = false;
 
                         // Get instances list
                         JSTACK.Nova.getserverlist(true, null, saveInstanceList.bind(this), onError.bind(this), this.region);
                     }
                 }.bind(this))
                 .catch(function(error) {
-                    this.authError({
+                    authError.call(this, {
                         error: {
                             code: error.status,
                             title: "Error",
