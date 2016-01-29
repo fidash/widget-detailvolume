@@ -1,9 +1,10 @@
 /* global VolumeDetails */
 
 window.addEventListener('DOMContentLoaded', function () {
-	"use strict";
+    "use strict";
 
-	var volumeDetails = new VolumeDetails();
-	volumeDetails.init();
+    var volumeDetails = new VolumeDetails();
+    volumeDetails.init();
+    volumeDetails.authenticate();
 
 }, false);

@@ -1,176 +1,178 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <link rel="stylesheet" type="text/css" href="lib/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="lib/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="css/tabsBelow.css" />
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
-</head>
-<body>
+    <head>
+        <link rel="stylesheet" type="text/css" href="lib/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="lib/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="css/tabsBelow.css" />
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+    </head>
+    <body>
 
-    <!-- Attach volume modal -->
-    <div id="attachVolumeModal" class="modal fade" style="top: 0px; display: none; font-size: 12px" aria-hidden="false">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header" style="padding-top:0; padding-bottom: 0;">
-            <a href="#" class="close" data-dismiss="modal">×</a>
-            <h4>Attach a volume</h4>
-          </div>
-          <div class="modal-body clearfix">       
-            <div>
-              <fieldset>
-                <div class="form-group required">
-                  <label class="control-label  required" for="id_name">Instance name *</label>
-                  <div class=" ">
-                    <select class="form-control" id="id_instance"></select>
-                  </div>
-                </div>
-                <div class="form-group ">
-                  <label class="control-label  " for="id_description">Device *</label>
-                  <div class=" ">
-                    <input class="form-control" type="text" value="/dev/vdc" id="id_device">
-                  </div>
-                </div>
-              </fieldset>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <span class="pull-left">* Required fields</span>
-            <button id="attach-volume" data-dismiss="modal" class="btn btn-primary pull-right" style="margin-left: 10px">Attach Volume</button>
-            <button class="btn btn-default" data-dismiss="modal">Cancel</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Detail view -->
-    <div id="detail-view" class="hide">
-
-        <!-- Header -->
-        <div id="detail-header" class="navbar navbar-default">
-            <div style="padding-left: 0;">
-                <i class="fa fa-database navbar-brand"></i>
-                <h4 id="volume-name" data-toggle="tooltip" data-placement="bottom"></h4>
-                <div id="volume-actions-dropdown" class="dropdown pull-right">
-                    <button id="dlabel" class="btn btn-primary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Actions
-                        <span class="caret"></span>
-                    </button>
-
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                        <li id="refresh-button" class="clickable" role ="presentation">
-                            <a role="menuitem" tabindex="-1">
-                                <i class="fa fa-refresh"></i> Refresh
-                            </a>
-                        </li>
-                        <li id="attach-button" class="clickable" data-toggle="modal" data-target="#attachVolumeModal" role ="presentation">
-                            <a role="menuitem" tabindex="-1">
-                                <i class="fa fa-link"></i> Attach Volume
-                            </a>
-                        </li>
-                        <li id="volume-terminate" class="clickable" role="presentation">
-                            <a role="menuitem" tabindex="-1">
-                                <i class="fa fa-trash"></i> Terminate Volume   
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <a id="volume-status" class="status pull-right" data-toggle="tooltip" data-placement="bottom">
-                    <div>
-                        <i></i>
+        <!-- Attach volume modal -->
+        <div id="attachVolumeModal" class="modal fade" style="top: 0px; display: none; font-size: 12px" aria-hidden="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="padding-top:0; padding-bottom: 0;">
+                        <a href="#" class="close" data-dismiss="modal">×</a>
+                        <h4>Attach a volume</h4>
                     </div>
-                </a>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-
-        <!-- Body -->
-        <div id="detail-body" class="tabbable tabs-below">
-
-            <div class="tab-content" style="padding-bottom:40px;">
-                <div id="overview" role="tabpanel" class="tab-pane active">
-                    <!-- Body -->
-                    <div id="detail-body">
-                        <div class="col-xs-6">
-                            <div id="volume-id">
-                                <i class="fa fa-list-alt"></i>
-                                <strong>ID: </strong>
-                                <!-- ID -->
-                                <span></span>
-                                <!--<i class="fa fa-files-o clickable copy" data-toggle="tooltip" data-placement="top" title="Copy to clipboard"></i>-->
-                            </div>
-
-                            <div id="volume-availability-zone">
-                                <i class="fa fa-globe"></i>
-                                <strong>Availability Zone: </strong>
-                                <!-- Availability Zone -->
-                                <span></span>
-                            </div>
-                            
-                            <div id="volume-size">
-                                <i class="fa fa-tasks"></i>
-                                <strong>Size: </strong>
-                                <!-- Size -->
-                                <span></span>
-                            </div>
-
-                            <div id="volume-created">
-                                <i class="glyphicon glyphicon-calendar"></i>
-                                <strong>Created: </strong>
-                                <span></span>
-                                <!-- Created -->
-                            </div>
-                            
+                    <div class="modal-body clearfix">
+                        <div>
+                            <fieldset>
+                                <div class="form-group required">
+                                    <label class="control-label  required" for="id_name">Instance name *</label>
+                                    <div class=" ">
+                                        <select class="form-control" id="id_instance"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <label class="control-label  " for="id_description">Device *</label>
+                                    <div class=" ">
+                                        <input class="form-control" type="text" value="/dev/vdc" id="id_device">
+                                    </div>
+                                </div>
+                            </fieldset>
                         </div>
-
-                        <div class="col-xs-6">
-                            <div id="volume-attachment">
-                                <i class="fa fa-link"></i>
-                                <strong>Attachment: </strong>
-                                <span></span>
-                                <!-- Attachment -->
-                            </div>
-                            <div id="volume-description">
-                                <i class="fa fa-pencil-square-o"></i>
-                                <strong>Description: </strong>
-                                <span clas="description"></span>
-                                <!-- Description -->
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <span class="pull-left">* Required fields</span>
+                        <button id="attach-volume" data-dismiss="modal" class="btn btn-primary pull-right" style="margin-left: 10px">Attach Volume</button>
+                        <button class="btn btn-default" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
-                <div id="snapshots" role="tabpanel" class="tab-pane">
-                    <ul class="list-group"></ul>
-                </div>
             </div>
-            <ul role="tablist" class="nav nav-tabs tablist" style="min-width: 360px;">
-                <li role="presentation" class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab" aria-expanded="true">Overview</a>
-                </li>
-                <!--<li role="presentation"><a href="#snapshots" aria-controls="snapshots" role="tab" data-toggle="tab" aria-expanded="false">Snapshots</a>
-                </li>-->
-                <li role="presentation" class="disabled"><a >Snapshots</a>
-                </li>
-            </ul>
         </div>
-    </div>
 
-    <!-- Default view -->
-    <div id="default-view" class="info hide">
-        No volume data received yet.
-    </div>
+        <!-- Detail view -->
+        <div id="detail-view" class="hide">
+
+            <!-- Header -->
+            <div id="detail-header" class="navbar navbar-default">
+                <div style="padding-left: 0;">
+                    <i class="fa fa-database navbar-brand"></i>
+                    <h4 id="volume-name" data-toggle="tooltip" data-placement="bottom"></h4>
+                    <div id="volume-actions-dropdown" class="dropdown pull-right">
+                        <button id="dlabel" class="btn btn-primary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Actions
+                            <span class="caret"></span>
+                        </button>
+
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                            <li id="refresh-button" class="clickable" role ="presentation">
+                                <a role="menuitem" tabindex="-1">
+                                    <i class="fa fa-refresh"></i> Refresh
+                                </a>
+                            </li>
+                            <li id="attach-button" class="clickable" data-toggle="modal" data-target="#attachVolumeModal" role ="presentation">
+                                <a role="menuitem" tabindex="-1">
+                                    <i class="fa fa-link"></i> Attach Volume
+                                </a>
+                            </li>
+                            <li id="volume-terminate" class="clickable" role="presentation">
+                                <a role="menuitem" tabindex="-1">
+                                    <i class="fa fa-trash"></i> Terminate Volume
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <a id="volume-status" class="status pull-right" data-toggle="tooltip" data-placement="bottom">
+                        <div>
+                            <i></i>
+                        </div>
+                    </a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <!-- Body -->
+            <div id="detail-body" class="tabbable tabs-below">
+
+                <div class="tab-content" style="padding-bottom:40px;">
+                    <div id="overview" role="tabpanel" class="tab-pane active">
+                        <!-- Body -->
+                        <div id="detail-body">
+                            <div class="col-xs-6">
+                                <div id="volume-id">
+                                    <i class="fa fa-list-alt"></i>
+                                    <strong>ID: </strong>
+                                    <!-- ID -->
+                                    <span></span>
+                                    <!--<i class="fa fa-files-o clickable copy" data-toggle="tooltip" data-placement="top" title="Copy to clipboard"></i>-->
+                                </div>
+
+                                <div id="volume-availability-zone">
+                                    <i class="fa fa-globe"></i>
+                                    <strong>Availability Zone: </strong>
+                                    <!-- Availability Zone -->
+                                    <span></span>
+                                </div>
+
+                                <div id="volume-size">
+                                    <i class="fa fa-tasks"></i>
+                                    <strong>Size: </strong>
+                                    <!-- Size -->
+                                    <span></span>
+                                </div>
+
+                                <div id="volume-created">
+                                    <i class="glyphicon glyphicon-calendar"></i>
+                                    <strong>Created: </strong>
+                                    <span></span>
+                                    <!-- Created -->
+                                </div>
+
+                            </div>
+
+                            <div class="col-xs-6">
+                                <div id="volume-attachment">
+                                    <i class="fa fa-link"></i>
+                                    <strong>Attachment: </strong>
+                                    <span></span>
+                                    <!-- Attachment -->
+                                </div>
+                                <div id="volume-description">
+                                    <i class="fa fa-pencil-square-o"></i>
+                                    <strong>Description: </strong>
+                                    <span clas="description"></span>
+                                    <!-- Description -->
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div id="snapshots" role="tabpanel" class="tab-pane">
+                        <ul class="list-group"></ul>
+                    </div>
+                </div>
+                <ul role="tablist" class="nav nav-tabs tablist" style="min-width: 360px;">
+                    <li role="presentation" class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab" aria-expanded="true">Overview</a>
+                    </li>
+                    <!--<li role="presentation"><a href="#snapshots" aria-controls="snapshots" role="tab" data-toggle="tab" aria-expanded="false">Snapshots</a>
+                         </li>-->
+                    <li role="presentation" class="disabled"><a >Snapshots</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Default view -->
+        <div id="default-view" class="info hide">
+            No volume data received yet.
+        </div>
 
 
-    <!-- Error view -->
-    <div id="error-view" class="error hide"></div>
-    
-    <!-- Scripts -->
-    <script src="lib/js/jquery.min.js"></script>
-    <script src="lib/js/bootstrap.min.js"></script>
-    <script src="lib/js/jstack.js"></script>
-    <script src="js/Utils.js"></script>
-    <script src="js/volumeDetails.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/main.js"></script>
-</body>
+        <!-- Error view -->
+        <div id="error-view" class="error hide"></div>
+
+        <!-- Scripts -->
+        <script src="lib/js/polyfill.min.js"></script>
+        <script src="lib/js/jquery.min.js"></script>
+        <script src="lib/js/bootstrap.min.js"></script>
+        <script src="lib/js/OStackAuth.js"></script>
+        <script src="lib/js/jstack.js"></script>
+        <script src="js/Utils.js"></script>
+        <script src="js/volumeDetails.js"></script>
+        <script src="js/ui.js"></script>
+        <script src="js/main.js"></script>
+    </body>
 </html>
