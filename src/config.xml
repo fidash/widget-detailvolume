@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<widget xmlns="http://wirecloud.conwet.fi.upm.es/ns/macdescription/1" vendor="UPM-ETSIINF" name="detailvolume-widget" version="0.6.1">
+<widget xmlns="http://wirecloud.conwet.fi.upm.es/ns/macdescription/1" vendor="UPM-ETSIINF" name="detailvolume-widget" version="0.6.7">
   <details>
     <title>Detail Volume</title>
     <email>bgrana@conwet.com</email>
@@ -13,6 +13,7 @@
   </requirements>
   <wiring>
     <inputendpoint name="volume_id" type="text" label="Volume ID" description="Receives volume ID and OpenStack service token." friendcode="volume_id"/>
+    <inputendpoint name="authentication" type="text" label="Authentication" description="Receive the authentication data via wiring" friendcode="openstack-auth"/>
   </wiring>
   <contents src="index.html" useplatformstyle="true"/>
   <rendering height="25" width="5"/>

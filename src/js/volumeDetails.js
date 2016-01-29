@@ -123,37 +123,34 @@ var VolumeDetails = (function (JSTACK) {
 	},
 
         authenticate: function () {
+            JSTACK.Keystone.init("https://cloud.lab.fiware.org");
 
-            OStackAuth.getTokenAndParams(OStackAuth.CLOUD_URL)
-                .then(function (params) {
-                    var token = params.token;
-                    var response = params.response;
-                    var responseBody = JSON.parse(response.responseText);
-                    // Temporal change to fix catalog name
-                    responseBody.token.serviceCatalog = responseBody.token.catalog;
-                    // Mimic JSTACK.Keystone.authenticate behavior on success
-                    JSTACK.Keystone.params.token = token;
-                    JSTACK.Keystone.params.access = responseBody.token;
-                    JSTACK.Keystone.params.currentstate = 2;
-                    // MORE
+            MashupPlatform.wiring.registerCallback("authentication", function(paramsraw) {
+                var params = JSON.parse(paramsraw);
+                var token = params.token;
+                var responseBody = params.body;
 
-                    if (this.hasReceivedVolume()) {
-                        this.getVolumeDetails();
+                if (token === this.token) {
+                    // same token, ignore
+                    return;
+                }
 
-                        // Get instances list
-                        JSTACK.Nova.getserverlist(true, null, saveInstanceList.bind(this), onError.bind(this), this.region);
-                    }
-                }.bind(this))
-                .catch(function(error) {
-                    authError.call(this, {
-                        error: {
-                            code: error.status,
-                            title: "Error",
-                            message: error.statusText
-                        }
-                    });
-                }.bind(this));
+                // Mimic JSTACK.Keystone.authenticate behavior on success
+                JSTACK.Keystone.params.token = token;
+                JSTACK.Keystone.params.access = responseBody.token;
+                JSTACK.Keystone.params.currentstate = 2;
 
+                this.token = token;
+                this.body = responseBody;
+
+                // extra
+                if (hasReceivedVolume.call(this)) {
+                    this.getVolumeDetails();
+
+                    // Get instances list
+                    JSTACK.Nova.getserverlist(true, null, saveInstanceList.bind(this), onError.bind(this), this.region);
+                }
+            }.bind(this));
         },
 
 	getVolumeDetails: function () {
