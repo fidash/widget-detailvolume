@@ -13,4 +13,5 @@ The Detail Volume widget has the following wiring endpoints:
 
 |Label|Name|Friendcode|Type|Description|
 |:--:|:--:|:--:|:--:|:--:|
+|Authentication|authentication|openstack-auth|text|Receive the authentication data via wiring.|
 |Volume ID|volume_id|volume_id|text|Receives volume ID and OpenStack service token.|
